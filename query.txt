@@ -1,0 +1,72 @@
+-----------
+1) Создать и сохранить рецпт с именем 'Recipe'
+
+In [2]: recipe = models.Recipe.objects.create(name='Recipe')
+In [3]: recipe.save()
+
+-----------
+2) Получить рецепты с именем 'Recipe'
+
+In [5]: models.Recipe.objects.filter(name='Recipe')
+Out[5]: <QuerySet [<Recipe: Recipe object (1)>]>
+
+-----------
+
+3) Получить рецепты с именем 'recipe', независимо от регистра написания
+
+In [11]: models.Recipe.objects.filter(name__iexact='recipe')
+Out[11]: <QuerySet [<Recipe: Recipe object (1)>, <Recipe: Recipe object (2)>]>
+
+-----------
+4) Поулчить рецепты с символами 'rec' в имени
+
+In [13]: models.Recipe.objects.filter(name__icontains='rec')
+Out[13]: <QuerySet [<Recipe: Recipe object (1)>, <Recipe: Recipe object (2)>]>
+
+-----------
+5) Получить рецепты, входящие в список а[]
+
+In [18]: a = ['recipe', 'recipe2', 'cake']
+In [19]: models.Recipe.objects.filter(name__in=a)
+Out[19]: <QuerySet [<Recipe: Recipe object (3)>]>
+
+-----------
+6) Установить первому рецпту с именем 'cake' выход(кол-во) =5 и себестоимость =100
+
+In [20]: recipe=models.Recipe.objects.filter(name='cake').first()
+In [21]: recipe.count = 5
+In [22]: recipe.primecost = 100
+In [23]: recipe.save()
+
+-----------
+7) Получить рецепты с выходом продукта >1
+
+In [27]: models.Recipe.objects.filter(count__gt=1)
+Out[27]: <QuerySet [<Recipe: Recipe object (3)>]>
+
+-----------
+8) Получить рецепты с себестоимостью <=100
+
+In [28]: models.Recipe.objects.filter(primecost__lte=100)
+Out[28]: <QuerySet [<Recipe: Recipe object (1)>, <Recipe: Recipe object (3)>]>
+
+-----------
+9) Получить рецепты с незаполненными инструментами
+
+In [36]: models.Recipe.objects.filter(tools__isnull=True)
+Out[36]: <QuerySet [<Recipe: Recipe object (1)>, <Recipe: Recipe object (2)>, <Recipe: Recipe object (3)>]>
+
+-----------
+10) Создать и добавить инструмент в рецепт 'cake', вывести инструменты
+
+In [37]: tool = models.Tool.objects.create(name='Mixer', cost=2000, usage=12)
+In [38]: tool.save()
+In [40]: recipe = models.Recipe.objects.filter(name='cake').first()
+In [41]: recipe.tool.add(models.Tool.objects.first())
+In [44]: recipe.tools.all()
+Out[44]: <QuerySet [<Tool: Tool object (1)>]>
+
+-----------
+
+
+

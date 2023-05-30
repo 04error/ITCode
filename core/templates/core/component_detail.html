@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+    <br>
+    <h3>{{ param1.0 }}: {{ param1.1 }}</h3>
+    {% if param2 %}
+        <br>
+        <h3>{{ param2.0 }}: {{ param2.1 }}</h3>
+    {% endif %}
+    <br>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
+        <b>Назад</b>
+    </a>
+</div>
+{% endblock %}

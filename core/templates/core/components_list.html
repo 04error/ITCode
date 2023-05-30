@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <br>
+        <a href="{% url 'core:component_create' %}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
+            <b>Создать</b>
+        </a>
+        <br>
+        {% if components %}
+        <table class="table table-bordered">
+          <thead>
+            <tr style="background-color: #2e3f7f; color: white;">
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Создатель</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for component in components %}
+            <tr>
+                <td>
+                    <a href="{% url 'core:component' component.pk %}">{{ component.name }}</a>
+                    {% if request.user.superuser or request.user.id == component.owner.id %}
+                    (<a href="{% url 'core:component_update' component.pk %}">редактировать</a>) |
+                    (<a href="{% url 'core:component_delete' component.pk %}">удалить</a>)
+                    {% endif %}
+
+                </td>
+                <td>{{ component.price }} / {{ component.unit }}</td>
+                {% if recipe.owner %}
+                <td>{{ component.owner.name }} ({{ component.owner.id }})</td>
+                {% else %}
+                <td>Гость</td>
+                {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% elif request_name %}
+        <p>Ингредиентов по запросу <b>«{{ request_name }}»</b> не найдено.</p>
+        {% else %}
+        <p>Ингредиентов не найдено.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+    <form action="{% url 'core:recipe_create' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">Создать</button>
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">Назад</a>
+    </form>
+    <br>
+
+</div>
+
+
+
+{% endblock %}

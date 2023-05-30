@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <br>
+        <a href="{% url 'core:recipe_create' %}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
+            <b>Создать</b>
+        </a>
+        <br>
+        {% if recipes %}
+        <table class="table table-bordered">
+          <thead>
+            <tr style="background-color: #2e3f7f; color: white;">
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Выход</th>
+                <th>Себестоимость</th>
+                <th>Создатель</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for recipe in recipes %}
+            <tr>
+                <td>
+                    <a href="{% url 'core:recipe' recipe.pk %}">{{ recipe.name }}</a>
+                    {% if request.user.superuser or request.user.id == component.owner.id %}
+                    (<a href="{% url 'core:recipe_update' recipe.pk %}">редактировать</a>) |
+                    (<a href="{% url 'core:recipe_delete' recipe.pk %}">удалить</a>)
+                    {% endif %}
+                </td>
+
+                {% if recipe.description %}
+                <td>{{ recipe.description }}</td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                <td>{{ recipe.count }}</td>
+                <td>{{ recipe.primecost }}</td>
+                {% if recipe.owner %}
+                <td>{{ recipe.owner.name }} ({{ recipe.owner.id }})</td>
+                {% else %}
+                <td>Гость</td>
+                {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% elif request_name %}
+        <p>Рецептов по запросу <b>«{{ request_name }}»</b> не найдено.</p>
+        {% else %}
+        <p>Рецептов не найдено.</p>
+        {% endif %}
+    </div>
+  {% endblock %}

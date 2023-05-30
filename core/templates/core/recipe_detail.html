@@ -1,0 +1,77 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+    <br>
+    {% if recipe.description %}
+    <p><b>Описание:</b> {{ recipe.description }}</p>
+    {% else %}
+    <p>Описания нет.</p>
+    {% endif %}
+    <br>
+    <h2>Ингредиенты</h2>
+    {% if recipe.components.all %}
+    <table class="table table-bordered">
+      <thead>
+        <tr style="background-color: #2e3f7f; color: white;">
+            <th>Название</th>
+            <th>Количество (у. е.)</th>
+            <th>Цена / 1 у. е.</th>
+            <th>Стоимость</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for component in recipe.components.all %}
+        <tr>
+            <td><a href="components/{{component.id}}">{{component.name}}</a></td>
+            <td>{{component.count}}</td>
+            <td>{{component.price}}</td>
+            <td>{{component.cost}}</td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>Ингредиенты не добавлены.</p>
+    {% endif %}
+    <br>
+
+    <h2>Инструменты</h2>
+    {% if recipe.tools.all %}
+    <table class="table table-bordered">
+      <thead>
+        <tr style="background-color: #2e3f7f; color: white;">
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Срок использования (мес.)</th>
+            <th>Амортизиция</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for tool in recipe.tools.all %}
+        <tr>
+            <td><a href="tools/{{tool.id}}">{{tool.name}}</a></td>
+            <td>{{ tool.cost }}</td>
+            <td>{{ tool.usage }}</td>
+            <td>{{ tool.depreciation }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Инструменты не добавлены.</p>
+    {% endif %}
+    <br>
+    <h3><b>Выход: {{ recipe.count }}</b></h3>
+    <h3><b>Себестоимость: {{ recipe.primecost }}</b></h3>
+    <br><br>
+    {% if owner %}
+    <p>Создано пользователем {{ recipe.owner.name }} ({{ recipe.owner.id }})</p>
+    {% else %}
+    <p>Создано гостем.</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'core:recipes' %}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;"><b>Назад</b></a>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <br>
+        <a href="{% url 'core:tool_create' %}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
+            <b>Создать</b>
+        </a>
+        <br>
+        {% if tools %}
+        <table class="table table-bordered">
+          <thead>
+            <tr style="background-color: #2e3f7f; color: white;">
+                <th>Название</th>
+                <th>Стоимость</th>
+                <th>Срок использования</th>
+                <th>Создатель</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for tool in tools %}
+            <tr>
+                <td>
+                    <a href="{% url 'core:tool' tool.pk %}">{{ tool.name }}</a>
+                    {% if request.user.superuser or request.user.id == tool.owner.id %}
+                    (<a href="{% url 'core:tool_update' tool.pk %}">редактировать</a>) |
+                    (<a href="{% url 'core:tool_delete' tool.pk %}">удалить</a>)
+                    {% endif %}
+                </td>
+                <td>{{ tool.cost }}</td>
+                <td>{{ tool.usage }}</td>
+                {% if recipe.owner %}
+                <td>{{ recipe.owner.name }} ({{ recipe.owner.id }})</td>
+                {% else %}
+                <td>Гость</td>
+                {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% elif request_name %}
+        <p>Инструментов по запросу <b>«{{ request_name }}»</b> не найдено.</p>
+        {% else %}
+        <p>Инструментов не найдено.</p>
+        {% endif %}
+    </div>
+{% endblock %}

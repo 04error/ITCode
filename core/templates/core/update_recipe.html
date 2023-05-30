@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Редактирование рецепта «{{ tool.name }}»</h1>
+    <br>
+    <form action="{% url 'core:recipe_update' recipe.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">Сохранить</button>
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
+        <b>Назад</b>
+    </a>
+    </form>
+    <br>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Удалить ингредиент «{{ component.name }}»?</h1>
+    <br>
+    <form action="{% url 'core:component_delete' component.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">Удалить</button>
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">Назад</a>
+    </form>
+</div>
+
+{% endblock %}
