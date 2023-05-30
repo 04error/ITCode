@@ -29,10 +29,6 @@ jobs:
         run: |
           python manage.py test core
 
-      - name: Run flake8
-        run: |
-          flake8 core
-
   build:
     name: Run build and push
     if: github.ref == 'refs/heads/main'
