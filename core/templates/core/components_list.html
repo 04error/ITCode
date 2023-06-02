@@ -3,6 +3,15 @@
     <div class="container">
         <h1>{{ title }}</h1>
         <br>
+        {% if search_form %}
+          <form class="d-flex" method="GET" style='width: 25%'>
+            {{ search_form }}
+            <button class="btn btn-primary" type="submit" style="background-color: #2e3f7f; color: white;">
+              поиск
+            </button>
+          </form>
+        {% endif %}
+        <br>
         <a href="{% url 'core:component_create' %}" class="btn btn-primary" style="background-color: #2e3f7f; color: white;">
             <b>Создать</b>
         </a>

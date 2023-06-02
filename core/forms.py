@@ -35,10 +35,10 @@ class CreateComponent(forms.ModelForm):
         return name
 
     def clean_unit(self):
-        name = self.cleaned_data['name']
-        if name.isdigit:
+        unit = self.cleaned_data['unit']
+        if unit.isdigit():
             raise forms.ValidationError('Введите буквенную единицу измерения!')
-        return name
+        return unit
 
 
 class CreateTool(forms.ModelForm):
@@ -52,7 +52,7 @@ class CreateTool(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data['name']
-        if name.isdigit:
+        if name.isdigit():
             raise forms.ValidationError('Название не может быть числом!')
         return name
 
@@ -80,7 +80,8 @@ class CreateRecipe(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data['name']
-        if name.isdigit:
+        print(name.isdigit())
+        if name.isdigit():
             raise forms.ValidationError('Название не может быть числом!')
         return name
 # endregion

@@ -4,7 +4,7 @@ from django.template import Template, Context
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from core import models, forms
-from core.datatools import recipe_datatools
+from core.datatools import calc_datatools
 
 
 class TitleMixin:
@@ -40,7 +40,7 @@ class RecipesList(TitleMixin, ListView):
         name = self.request.GET.get('name')
         qs = models.Recipe.objects.all()
         for i in qs:
-            recipe_datatools.calculate_primecost(i)
+            calc_datatools.calculate_primecost(i)
 
         if name:
             return qs.filter(name__icontains=name)
@@ -52,6 +52,10 @@ class RecipesList(TitleMixin, ListView):
         context['request_name'] = self.request.GET.get('name')
         return context
 
+    class Meta:
+        model = models.Recipe
+        ordering = ('name',)
+
 
 class ComponentsList(TitleMixin, ListView):
     model = models.Component
@@ -61,7 +65,7 @@ class ComponentsList(TitleMixin, ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name')
-        parent_components = list(filter(lambda x: x.parent, models.Component.objects.all()))
+        parent_components = list(filter(lambda x: x.parent == 0, models.Component.objects.all()))
         qs = parent_components
         print(qs)
         if name:
@@ -74,6 +78,10 @@ class ComponentsList(TitleMixin, ListView):
         context['request'] = self.request.GET.get('name')
         return context
 
+    class Meta:
+        model = models.Component
+        ordering = ('name',)
+
 
 class ToolsList(TitleMixin, ListView):
     model = models.Tool
@@ -83,7 +91,7 @@ class ToolsList(TitleMixin, ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name')
-        parent_tools = filter(lambda x: x.parent, models.Tool.objects.all())
+        parent_tools = filter(lambda x: x.parent == 0, models.Tool.objects.all())
         qs = parent_tools
         if name:
             return qs.filter(name__icontains=name)
@@ -94,6 +102,10 @@ class ToolsList(TitleMixin, ListView):
         context['search_form'] = forms.ToolSearch(self.request.GET or None)
         context['request'] = self.request.GET.get('name')
         return context
+
+    class Meta:
+        model = models.Tool
+        ordering = ('name',)
 # endregion
 
 
@@ -105,7 +117,7 @@ class RecipeDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         recipe = models.Recipe.objects.get(id=self.kwargs['pk'])
-        recipe_datatools.calculate_primecost(recipe)
+        calc_datatools.calculate_primecost(recipe)
 
         context = super().get_context_data(**kwargs)
         context['title'] = f"Рецепт «{recipe.name}»"
@@ -141,6 +153,7 @@ class ToolDetail(DetailView):
         if tool.usage:
             context['param2'] = ['Срок использования (мес.)', tool.usage]
         return context
+
 # endregion
 
 
