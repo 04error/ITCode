@@ -26,11 +26,11 @@ class CreateComponent(forms.ModelForm):
 
     class Meta:
         model = models.Component
-        fields = ('name', 'unit', 'price',)
+        fields = ('name', 'unit', 'price')
 
     def clean_name(self):
         name = self.cleaned_data['name']
-        if name.isdigit:
+        if name.isdigit():
             raise forms.ValidationError('Имя не может быть числом!')
         return name
 
@@ -48,13 +48,14 @@ class CreateTool(forms.ModelForm):
 
     class Meta:
         model = models.Tool
-        fields = ('name', 'cost', 'usage',)
+        fields = ('name', 'cost', 'usage')
 
     def clean_name(self):
         name = self.cleaned_data['name']
         if name.isdigit():
             raise forms.ValidationError('Название не может быть числом!')
         return name
+
 
 '''
 class ComponentMultipleChoiceField(forms.ModelMultipleChoiceField):
@@ -76,7 +77,7 @@ class CreateRecipe(forms.ModelForm):
 
     class Meta:
         model = models.Recipe
-        fields = ('name', 'description', )
+        fields = ('name', 'description')
 
     def clean_name(self):
         name = self.cleaned_data['name']

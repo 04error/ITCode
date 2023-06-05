@@ -30,14 +30,14 @@
             <tr>
                 <td>
                     <a href="{% url 'core:component' component.pk %}">{{ component.name }}</a>
-                    {% if request.user.superuser or request.user.id == component.owner.id %}
+                    {% if user.is_superuser or request.user.id == component.owner.id %}
                     (<a href="{% url 'core:component_update' component.pk %}">редактировать</a>) |
                     (<a href="{% url 'core:component_delete' component.pk %}">удалить</a>)
                     {% endif %}
 
                 </td>
                 <td>{{ component.price }} / {{ component.unit }}</td>
-                {% if recipe.owner %}
+                {% if component.owner %}
                 <td>{{ component.owner.name }} ({{ component.owner.id }})</td>
                 {% else %}
                 <td>Гость</td>

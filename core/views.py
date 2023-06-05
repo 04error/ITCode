@@ -65,7 +65,7 @@ class ComponentsList(TitleMixin, ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name')
-        parent_components = list(filter(lambda x: x.parent == 0, models.Component.objects.all()))
+        parent_components = list(filter(lambda x: x.parent, models.Component.objects.all()))
         qs = parent_components
         print(qs)
         if name:
@@ -231,4 +231,3 @@ class DeleteRecipe(DeleteView):
     success_url = reverse_lazy('core:recipes')
 
 # endregion
-

@@ -19,7 +19,7 @@ class Component(models.Model):
     price = models.FloatField('Цена', null=True)
     cost = models.FloatField('Стоимость', null=True, blank=True)
     parent = models.BooleanField(default=True)
-    parent_id = models.IntegerField(null=True, blank=True)
+    parent_id = models.IntegerField(null=True, blank=True, default=0)
 
 
 class Tool(models.Model):
@@ -30,16 +30,16 @@ class Tool(models.Model):
     time = models.IntegerField('Время применения', null=True, default=0)
     depreciation = models.FloatField('Амортизация', null=True)
     parent = models.BooleanField(default=True)
-    parent_id = models.IntegerField(null=True)
+    parent_id = models.IntegerField(null=True, default=0)
 
 
 class Recipe(models.Model):
     name = models.CharField('Название', max_length=255)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField('Описание', null=True)
-    components = models.ManyToManyField(Component, null=True, verbose_name='Ингредиенты', related_name='recipe')
-    tools = models.ManyToManyField(Tool, null=True, verbose_name='Инструменты', related_name='recipe')
+    components = models.ManyToManyField(Component, blank=True, verbose_name='Ингредиенты', related_name='recipe')
+    tools = models.ManyToManyField(Tool, blank=True, verbose_name='Инструменты', related_name='recipe')
     count = models.IntegerField('Выход', default=1)
-    primecost = models.FloatField('Себестоимость', null=True)
+    primecost = models.FloatField('Себестоимость', null=True, default=0)
     parent = models.BooleanField(default=True)
     parent_id = models.IntegerField(null=True, default=0)

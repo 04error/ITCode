@@ -32,7 +32,7 @@
             <tr>
                 <td>
                     <a href="{% url 'core:recipe' recipe.pk %}">{{ recipe.name }}</a>
-                    {% if request.user.superuser or request.user.id == component.owner.id %}
+                    {% if user.is_superuser or request.user.id == recipe.owner.id %}
                     (<a href="{% url 'core:recipe_update' recipe.pk %}">редактировать</a>) |
                     (<a href="{% url 'core:recipe_delete' recipe.pk %}">удалить</a>)
                     {% endif %}
