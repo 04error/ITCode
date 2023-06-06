@@ -4,9 +4,10 @@ from core import models
 
 
 class RecipeTest(TestCase):
+    recipes = []
+
     def setUp(self) -> None:
         self.client = Client()
-        self.recipes = []
         for i in models.Recipe.objects.all():
             self.recipes.append(i)
 
