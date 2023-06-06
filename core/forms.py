@@ -28,13 +28,13 @@ class CreateComponent(forms.ModelForm):
         model = models.Component
         fields = ('name', 'unit', 'price')
 
-    def clean_name(self):
+    def clean_name(self) -> str:
         name = self.cleaned_data['name']
         if name.isdigit():
             raise forms.ValidationError('Имя не может быть числом!')
         return name
 
-    def clean_unit(self):
+    def clean_unit(self) -> str:
         unit = self.cleaned_data['unit']
         if unit.isdigit():
             raise forms.ValidationError('Введите буквенную единицу измерения!')
@@ -45,10 +45,11 @@ class CreateTool(forms.ModelForm):
     name = forms.CharField(label='Название', min_length=2)
     cost = forms.FloatField(label="Стоимость", min_value=1)
     usage = forms.IntegerField(label="Срок использования (месяцев)", min_value=1)
+    # time = forms.FloatField(label="Время применения (часов)", min_value=0.1)
 
     class Meta:
         model = models.Tool
-        fields = ('name', 'cost', 'usage')
+        fields = ('name', 'cost', 'usage',)
 
     def clean_name(self) -> str:
         name = self.cleaned_data['name']
@@ -77,7 +78,7 @@ class CreateRecipe(forms.ModelForm):
 
     class Meta:
         model = models.Recipe
-        fields = ('name', 'description')
+        fields = ('name', 'description', 'count')
 
     def clean_name(self) -> str:
         name = self.cleaned_data['name']

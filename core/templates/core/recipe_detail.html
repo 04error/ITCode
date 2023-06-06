@@ -26,10 +26,17 @@
       <tbody>
       {% for component in recipe.components.all %}
         <tr>
-            <td><a href="components/{{component.id}}">{{component.name}}</a></td>
+            <td>
+                <a href="{% url 'core:component' component.pk %}">{{component.name}}</a>
+                {% if user.is_superuser or request.user.id == component.owner.id %}
+                (<a href="{% url 'core:component_update' component.pk %}">редактировать</a>) |
+                (<a href="{% url 'core:component_delete' component.pk %}">удалить</a>)
+                {% endif %}
+            </td>
             <td>{{component.count}}</td>
             <td>{{component.price}}</td>
             <td>{{component.cost}}</td>
+
 
         </tr>
       {% endfor %}
@@ -51,15 +58,23 @@
             <th>Название</th>
             <th>Цена</th>
             <th>Срок использования (мес.)</th>
+            <th>Время применения (час.)</th>
             <th>Амортизиция</th>
         </tr>
       </thead>
       <tbody>
       {% for tool in recipe.tools.all %}
         <tr>
-            <td><a href="tools/{{tool.id}}">{{tool.name}}</a></td>
+            <td>
+                <a href="{% url 'core:tool' tool.pk %}">{{tool.name}}</a>
+                {% if user.is_superuser or request.user.id == tool.owner.id %}
+                (<a href="{% url 'core:tool_update' tool.pk %}">редактировать</a>) |
+                (<a href="{% url 'core:tool_delete' tool.pk %}">удалить</a>)
+                {% endif %}
+            </td>
             <td>{{ tool.cost }}</td>
             <td>{{ tool.usage }}</td>
+            <td>{{ tool.time }}</td>
             <td>{{ tool.depreciation }}</td>
         </tr>
       {% endfor %}
@@ -69,8 +84,8 @@
     <p>Инструменты не добавлены.</p>
     {% endif %}
     <br>
-    <h3><b>Выход: {{ recipe.count }}</b></h3>
-    <h3><b>Себестоимость: {{ recipe.primecost }}</b></h3>
+    <h3><b>Выход: {{ recipe.count }} (у. е.)</b></h3>
+    <h3><b>{{ primecost_str }}</b></h3>
     <br><br>
     {% if recipe.owner %}
     <p>Создано пользователем <b>{{ recipe.owner.name }} ({{ recipe.owner.id }})</b></p>

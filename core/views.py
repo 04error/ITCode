@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from core import models, forms
@@ -35,7 +36,7 @@ class RecipesList(TitleMixin, ListView):
     title = 'База рецептов'
     form = forms.RecipeSearch()
 
-    def get_queryset(self) -> list | filter:
+    def get_queryset(self) -> list :
         name = self.request.GET.get('name')
         qs = models.Recipe.objects.all()
         for i in qs:
@@ -48,7 +49,7 @@ class RecipesList(TitleMixin, ListView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['search_form'] = forms.RecipeSearch(self.request.GET or None)
-        context['request_name'] = self.request.GET.get('name')
+        context['request_name'] = self.request.GET.get('name',)
         return context
 
 
@@ -58,8 +59,8 @@ class ComponentsList(TitleMixin, ListView):
     context_object_name = 'components'
     title = 'База ингредиентов'
 
-    def get_queryset(self) -> list | filter:
-        name = self.request.GET.get('name')
+    def get_queryset(self) -> list:
+        name = self.request.GET.get('name',)
         parent_components = list(filter(lambda x: x.parent, models.Component.objects.all()))
         qs = parent_components
         print(qs)
@@ -80,9 +81,9 @@ class ToolsList(TitleMixin, ListView):
     context_object_name = 'tools'
     title = 'База инструментов'
 
-    def get_queryset(self) -> list | filter:
+    def get_queryset(self):
         name = self.request.GET.get('name')
-        parent_tools = filter(lambda x: x.parent == 0, models.Tool.objects.all())
+        parent_tools = models.Tool.objects.all()  # .filter(parent__iexact=True)
         qs = parent_tools
         if name:
             return qs.filter(name__icontains=name)
@@ -107,7 +108,9 @@ class RecipeDetail(DetailView):
         calc_datatools.calculate_primecost(recipe)
 
         context = super().get_context_data(**kwargs)
-        context['title'] = f"Рецепт «{recipe.name}»"
+        context['title'] = f'Рецепт «{recipe.name}»'
+        context['primecost_str'] = \
+            f'Себестоимость: {recipe.primecost} ({format(recipe.primecost/recipe.count, ".2f")} / 1 у. е.)'
         return context
 
 
@@ -121,7 +124,7 @@ class ComponentDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"Ингредиент «{component.name}»"
         context['param1'] = ['Цена', component.price]
-        if component.count:
+        if not component.parent:
             context['param2'] = ['Количество (у.е.)', component.count]
         return context
 
@@ -136,7 +139,9 @@ class ToolDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"Инструмент «{tool.name}»"
         context['param1'] = ['Цена', tool.cost]
-        if tool.usage:
+        if not tool.parent:
+            context['param2'] = ['Время применения (час)', tool.time]
+        else:
             context['param2'] = ['Срок использования (мес.)', tool.usage]
         return context
 
