@@ -4,9 +4,8 @@ from core import models
 
 
 class RecipeTest(TestCase):
-    recipes = []
 
-    def setUp(self) -> None:
+    def setUp(self):
         self.client = Client()
         for i in models.Recipe.objects.all():
             self.recipes.append(i)
@@ -47,14 +46,6 @@ class ComponentTest(TestCase):
         response = self.client.post(reverse('core:component_create'), data=data, follow=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_cost(self):
-        data = {
-            'name': 'name',
-            'price': 1000,
-        }
-        response = self.client.post(reverse('core:component_create'), data=data, follow=True)
-        print(response)
-
 
 class ToolTest(TestCase):
     def setUp(self) -> None:
@@ -66,7 +57,7 @@ class ToolTest(TestCase):
 
     def test_create(self):
         data = {
-            'name': 'name',
+            'name': 'tool',
             'cost': 1000,
             'usage': 5
         }

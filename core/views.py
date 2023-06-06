@@ -116,7 +116,6 @@ class ComponentDetail(DetailView):
     template_name = 'core/component_detail.html'
     context_object_name = 'recipe_component'
 
-
     def get_context_data(self, **kwargs) -> dict:
         component = self.model.objects.get(id=self.kwargs['pk'])
         context = super().get_context_data(**kwargs)
@@ -165,10 +164,9 @@ class RecipeCreate(TitleMixin, CreateView):
     model = models.Recipe
     template_name = 'core/create_recipe.html'
     form_class = forms.CreateRecipe
-    success_url = reverse_lazy('core:recipes')
 
-    def get_success_url(self):
-        return reverse('core:recipes', args=(int(self.object.pk),))
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('core:recipe', kwargs={'pk': self.object.pk})
 
 
 # region UpdateViews
@@ -190,7 +188,9 @@ class UpdateRecipe(UpdateView):
     model = models.Recipe
     template_name = 'core/update_recipe.html'
     form_class = forms.CreateRecipe
-    success_url = reverse_lazy('core:recipes')
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('core:recipe', kwargs={'pk': self.object.pk})
 
 # endregion
 
