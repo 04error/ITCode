@@ -32,6 +32,7 @@ def update_tool(tool: models.Tool) -> models.Tool:
 
     if tool.cost != parent.cost:
         tool.cost = parent.cost
+
     if tool.usage != parent.usage:
         tool.usage = parent.usage
 

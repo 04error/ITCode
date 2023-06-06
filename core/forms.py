@@ -50,7 +50,7 @@ class CreateTool(forms.ModelForm):
         model = models.Tool
         fields = ('name', 'cost', 'usage')
 
-    def clean_name(self):
+    def clean_name(self) -> str:
         name = self.cleaned_data['name']
         if name.isdigit():
             raise forms.ValidationError('Название не может быть числом!')
@@ -79,9 +79,8 @@ class CreateRecipe(forms.ModelForm):
         model = models.Recipe
         fields = ('name', 'description')
 
-    def clean_name(self):
+    def clean_name(self) -> str:
         name = self.cleaned_data['name']
-        print(name.isdigit())
         if name.isdigit():
             raise forms.ValidationError('Название не может быть числом!')
         return name

@@ -1,7 +1,7 @@
 {% extends "core/base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Удалить инструмент «{{ component.name }}»?</h1>
+    <h1>Удалить инструмент «{{ tool.name }}»?</h1>
     <br>
     <form action="{% url 'core:tool_delete' tool.pk %}" method="POST">
         {% csrf_token %}

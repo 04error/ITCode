@@ -72,8 +72,8 @@
     <h3><b>Выход: {{ recipe.count }}</b></h3>
     <h3><b>Себестоимость: {{ recipe.primecost }}</b></h3>
     <br><br>
-    {% if owner %}
-    <p>Создано пользователем {{ recipe.owner.name }} ({{ recipe.owner.id }})</p>
+    {% if recipe.owner %}
+    <p>Создано пользователем <b>{{ recipe.owner.name }} ({{ recipe.owner.id }})</b></p>
     {% else %}
     <p>Создано гостем.</p>
     {% endif %}

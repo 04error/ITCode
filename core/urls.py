@@ -21,7 +21,7 @@ from core import views
 app_name = 'core'
 
 urlpatterns = [
-    path('index/', views.index, name='index'),
+    # path('index/', views.index, name='index'),
 
     path('recipes/', views.RecipesList.as_view(), name='recipes'),
     path('recipes/<int:pk>', views.RecipeDetail.as_view(), name='recipe'),

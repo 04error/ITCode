@@ -5,10 +5,10 @@ class User(models.Model):
     name = models.CharField('Имя', max_length=255)
     dc = models.DateTimeField(auto_now_add=True)
 
-
-class UserId(models.Model):
-    number = models.CharField(max_length=255, unique=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userid')
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('name', )
 
 
 class Component(models.Model):
@@ -21,6 +21,11 @@ class Component(models.Model):
     parent = models.BooleanField(default=True)
     parent_id = models.IntegerField(null=True, blank=True, default=0)
 
+    class Meta:
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
+        ordering = ('name', 'price', 'owner',)
+
 
 class Tool(models.Model):
     name = models.CharField('Название', max_length=255)
@@ -31,6 +36,11 @@ class Tool(models.Model):
     depreciation = models.FloatField('Амортизация', null=True)
     parent = models.BooleanField(default=True)
     parent_id = models.IntegerField(null=True, default=0)
+
+    class Meta:
+        verbose_name = 'Инструмент'
+        verbose_name_plural = 'Инструменты'
+        ordering = ('name', 'cost', 'owner',)
 
 
 class Recipe(models.Model):
@@ -43,3 +53,8 @@ class Recipe(models.Model):
     primecost = models.FloatField('Себестоимость', null=True, default=0)
     parent = models.BooleanField(default=True)
     parent_id = models.IntegerField(null=True, default=0)
+
+    class Meta:
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+        ordering = ('name', 'owner',)
