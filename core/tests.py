@@ -7,6 +7,7 @@ class RecipeTest(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.recipes = []
         for i in models.Recipe.objects.all():
             self.recipes.append(i)
 
