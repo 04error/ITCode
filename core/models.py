@@ -10,6 +10,9 @@ class User(models.Model):
         verbose_name_plural = 'Пользователи'
         ordering = ('name', )
 
+    def __str__(self):
+        return f'{self.name} ({self.pk})'
+
 
 class Component(models.Model):
     name = models.CharField('Название', max_length=255)
@@ -25,6 +28,9 @@ class Component(models.Model):
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         ordering = ('name', 'price', 'owner',)
+
+    def __str__(self):
+        return self.name
 
 
 class Tool(models.Model):
@@ -42,6 +48,9 @@ class Tool(models.Model):
         verbose_name_plural = 'Инструменты'
         ordering = ('name', 'cost', 'owner',)
 
+    def __str__(self):
+        return self.name
+
 
 class Recipe(models.Model):
     name = models.CharField('Название', max_length=255)
@@ -58,3 +67,6 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         ordering = ('name', 'owner',)
+
+    def __str__(self):
+        return self.name
